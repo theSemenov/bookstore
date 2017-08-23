@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx.xsd
+                           http://www.springframework.org/schema/data/jpa
+                           http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+                           http://www.springframework.org/schema/jee
+                           http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+    <context:spring-configured/>
+
+    <jpa:repositories base-package="ru.ad.tec.bookstore.db"
+                      transaction-manager-ref="bookstoreTransactionManager"
+                      entity-manager-factory-ref="bookstoreEntityManagerFactory"/>
+
+    <bean id="bookstoreDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/bookstoredb"/>
+        <property name="user" value="mysqluser"/>
+        <property name="password" value="password"/>
+        <property name="autoCommitOnClose" value="true"/>
+    </bean>
+
+    <bean id="bookstoreTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="bookstoreEntityManagerFactory"/>
+    </bean>
+
+    <bean id="bookstoreEntityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="bookstorePersistenceUnit"/>
+        <property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml" />
+        <property name="dataSource" ref="bookstoreDataSource" />
+        <property name="packagesToScan" value="ru.ad.tec.db.entities"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter">
+                <property name="generateDdl" value="false" />
+                <property name="showSql" value="true"/>
+                <property name="databasePlatform" value="org.eclipse.persistence.platform.database.MySQLPlatform"/>
+                <property name="database" value="MYSQL"/>
+            </bean>
+        </property>
+        <property name="jpaPropertyMap">
+            <map>
+                <entry key="eclipselink.weaving" value="false"/>
+            </map>
+        </property>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="bookstoreTransactionManager" mode="proxy"/>
+
+    <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor">
+        <property name="alwaysUseJndiLookup" value="true"/>
+    </bean>
+
+
+</beans>

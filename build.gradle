@@ -1,0 +1,43 @@
+plugins {
+    id 'com.devsoap.plugin.vaadin' version '1.2.0'
+    id 'idea'
+}
+
+group 'ru.ad.tec'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'com.google.guava', name: 'guava', version: '23.0'
+    compile group: 'com.vaadin', name: 'vaadin-spring', version: '2.0.1'
+    compile group: 'org.springframework', name: 'spring-context', version: '4.3.10.RELEASE'
+    compile group: 'org.springframework', name: 'spring-beans', version: '4.3.10.RELEASE'
+    compile group: 'org.springframework', name: 'spring-aspects', version: '4.3.10.RELEASE'
+    compile group: 'org.springframework.data', name: 'spring-data-jpa', version: '1.11.6.RELEASE'
+    compile group: 'org.springframework', name: 'spring-binding', version: '1.0.6'
+    compile group: 'org.eclipse.persistence', name: 'eclipselink', version: '2.5.0'
+    compile group: 'org.eclipse.persistence', name: 'org.eclipse.persistence.jpa', version: '2.5.0'
+    compile group: 'com.mchange', name: 'c3p0', version: '0.9.5.2'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.7-dmr'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+vaadin {
+    version '8.1.0'
+    logToConsole true
+    vaadinRun {
+        server = 'jetty'
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.1'
+}
+

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
+
+    <persistence-unit name="bookstorePersistenceUnit" transaction-type="RESOURCE_LOCAL">
+        <class>ru.ad.tec.bookstore.db.entity.BookEntity</class>
+        <class>ru.ad.tec.bookstore.db.converter.LocalDateConverter</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    </persistence-unit>
+
+</persistence>
